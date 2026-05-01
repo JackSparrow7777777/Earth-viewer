@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Astra Terra is a cinematic, interactive 3D Earth visualization for the browser."
+    />
+    <title>Astra Terra | Cinematic Earth</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <main id="app" aria-label="Astra Terra interactive 3D Earth">
+      <canvas id="globe-canvas"></canvas>
+      <section id="imagery-scene" class="imagery-scene" aria-label="Navigable satellite city view">
+        <div id="imagery-stage" class="imagery-stage" aria-hidden="true"></div>
+        <div class="imagery-vignette" aria-hidden="true"></div>
+        <div class="imagery-status" aria-live="polite">
+          <strong id="imagery-place">Satellite view</strong>
+          <span id="imagery-coords">Esri World Imagery</span>
+        </div>
+      </section>
+      <div class="space-gradient" aria-hidden="true"></div>
+      <div class="scanline" aria-hidden="true"></div>
+
+      <div id="loading" class="loading">
+        <div class="loading-ring" aria-hidden="true"></div>
+        <div>
+          <p class="eyebrow">Astra Terra</p>
+          <h1>Calibrating orbit</h1>
+          <div class="meter" aria-hidden="true"><span id="loading-bar"></span></div>
+          <p id="loading-note">Loading planetary layers...</p>
+        </div>
+      </div>
+
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Astra Terra home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>
+            <strong>Astra Terra</strong>
+            <small>Orbital command view</small>
+          </span>
+        </a>
+        <form id="search-form" class="search" autocomplete="off">
+          <span aria-hidden="true">⌕</span>
+          <input id="search-input" type="search" placeholder="Search city" aria-label="Search city" />
+          <div id="search-results" class="search-results" role="listbox"></div>
+        </form>
+        <div class="actions">
+          <button id="tour-btn" class="ghost-btn" type="button">Tour</button>
+          <button id="reset-btn" class="icon-btn" type="button" aria-label="Reset to globe view">↺</button>
+          <button id="shot-btn" class="icon-btn" type="button" aria-label="Capture screenshot">▣</button>
+        </div>
+      </header>
+
+      <nav class="destination-rail" aria-label="Destination shortcuts">
+        <div class="rail-header">
+          <span class="eyebrow">Destinations</span>
+          <span id="range-readout">Low orbit</span>
+        </div>
+        <div id="city-buttons" class="city-buttons"></div>
+      </nav>
+
+      <aside class="control-panel" aria-label="Earth controls">
+        <section class="control-section">
+          <div class="section-title">
+            <span>Visual Mode</span>
+            <small id="mode-readout">Satellite</small>
+          </div>
+          <div class="segmented" id="mode-buttons">
+            <button type="button" data-mode="satellite" class="active">Satellite</button>
+            <button type="button" data-mode="political">Labeled</button>
+            <button type="button" data-mode="night">Night</button>
+            <button type="button" data-mode="terrain">Terrain</button>
+            <button type="button" data-mode="clean">Clean</button>
+          </div>
+        </section>
+
+        <section class="control-section toggles" id="layer-toggles">
+          <label><input type="checkbox" data-toggle="clouds" checked /> <span>Clouds</span></label>
+          <label><input type="checkbox" data-toggle="atmosphere" checked /> <span>Atmosphere</span></label>
+          <label><input type="checkbox" data-toggle="terrain" /> <span>Elevation</span></label>
+          <label><input type="checkbox" data-toggle="labels" checked /> <span>Labels</span></label>
+          <label><input type="checkbox" data-toggle="borders" /> <span>Borders</span></label>
+          <label><input type="checkbox" data-toggle="buildings" checked /> <span>3D Cities</span></label>
+          <label><input type="checkbox" data-toggle="weather" /> <span>Weather</span></label>
+          <label><input type="checkbox" data-toggle="aurora" checked /> <span>Aurora</span></label>
+          <label><input type="checkbox" data-toggle="sound" /> <span>Sound</span></label>
+        </section>
+
+        <section class="control-section time-section">
+          <div class="section-title">
+            <span>Solar Time</span>
+            <label class="live-toggle"><input id="live-time" type="checkbox" checked /> Live</label>
+          </div>
+          <input id="time-slider" type="range" min="0" max="24" value="12" step="0.1" aria-label="Manual solar time" />
+          <div class="time-readout">
+            <span id="time-label">Live UTC</span>
+            <span id="sun-label">Sun vector locked</span>
+          </div>
+        </section>
+      </aside>
+
+      <div id="labels-layer" class="labels-layer" aria-hidden="true"></div>
+
+      <article id="location-card" class="location-card" aria-live="polite">
+        <span class="eyebrow">Selected Location</span>
+        <h2 id="location-name">Earth</h2>
+        <p id="location-copy">Full-planet view with live sunlight and atmospheric scattering.</p>
+        <dl>
+          <div><dt>Latitude</dt><dd id="location-lat">0.00</dd></div>
+          <div><dt>Longitude</dt><dd id="location-lon">0.00</dd></div>
+          <div><dt>View</dt><dd id="location-view">Orbital</dd></div>
+        </dl>
+      </article>
+
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </main>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
